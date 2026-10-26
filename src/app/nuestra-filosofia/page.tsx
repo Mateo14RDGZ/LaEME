@@ -46,9 +46,10 @@ export default function PhilosophyPage() {
         </div>
       </header>
 
-      <div className="mt-16 max-w-2xl space-y-6 text-xl leading-relaxed text-muted">
+      <div className="mt-16 max-w-2xl space-y-6 text-xl leading-relaxed">
+        <p className="font-display text-3xl font-bold leading-snug">Hecha en Trinidad, Flores.</p>
         <p>
-          No necesitamos prometer demasiado. El producto, los ingredientes, el oficio y el cuidado en cada detalle
+          Cada cerveza de LA EME se piensa y se elabora en Trinidad, Flores. No necesitamos prometer demasiado. El producto, los ingredientes, el oficio y el cuidado en cada detalle
           hablan por sí solos.
         </p>
         <Tagline className="text-3xl leading-snug tracking-normal" />
