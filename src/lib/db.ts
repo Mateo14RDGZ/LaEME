@@ -14,9 +14,21 @@ function createClient(): PrismaClient {
   });
 }
 
-/** Cliente único por proceso (evita agotar conexiones con el hot reload de Next). */
-export const db = globalForPrisma.prisma ?? createClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = db;
+function getClient(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createClient();
+  }
+  return globalForPrisma.prisma;
 }
+
+/**
+ * Cliente de base de datos creado al primer uso, no al importar el módulo.
+ * Así el build (que importa el código sin ejecutar consultas) no necesita DATABASE_URL.
+ */
+export const db: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getClient();
+    const value = Reflect.get(client, prop, client);
+    return typeof value === "function" ? value.bind(client) : value;
+  },
+});
