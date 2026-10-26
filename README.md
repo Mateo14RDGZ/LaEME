@@ -185,7 +185,7 @@ Ajustes del sitio (contacto y redes): filas en `SiteSetting`, claves `contact.em
 
 ## Expiración de reservas
 
-`vercel.json` programa `GET /api/cron/expire-orders` cada 5 minutos. Vercel envía `Authorization: Bearer $CRON_SECRET` automáticamente cuando `CRON_SECRET` está definida. **Los cron jobs de cada 5 minutos requieren el plan Pro de Vercel**; en plan Hobby el mínimo es diario. Sin esta tarea, el stock disponible igual se libera por fecha, pero el estado del pedido no pasa a `EXPIRED`.
+`vercel.json` programa `GET /api/cron/expire-orders` **una vez al día** (03:00 UTC), que es el mínimo permitido en el plan Hobby de Vercel. El stock disponible se libera igual en cada consulta, porque las reservas vencidas dejan de contar por fecha; el cron solo actualiza el estado del pedido a `EXPIRED`. Para correrlo cada 5 minutos, cambiar `schedule` a `*/5 * * * *` en `vercel.json` (requiere el plan Pro). Vercel envía `Authorization: Bearer $CRON_SECRET` cuando `CRON_SECRET` está definida.
 
 Para probarla a mano:
 
