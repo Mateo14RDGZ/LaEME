@@ -1,0 +1,160 @@
+// Esquema de LA EME.
+// Reglas de integridad que Prisma no expresa (CHECK constraints) están en
+// prisma/migrations/*/migration.sql y se documentan en el README.
+
+generator client {
+  provider   = "prisma-client"
+  output     = "../src/generated/prisma"
+  moduleFormat = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Estado comercial de una cerveza. Solo AVAILABLE puede comprarse.
+enum ProductStatus {
+  DRAFT
+  COMING_SOON
+  AVAILABLE
+  SOLD_OUT
+  DISCONTINUED
+}
+
+/// Ciclo de vida del pedido. Las transiciones se hacen solo desde el backend.
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PAYMENT_REJECTED
+  CANCELLED
+  EXPIRED
+  REFUNDED
+  NEEDS_REVIEW
+}
+
+model Product {
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  name            String
+  style           String
+  status          ProductStatus @default(DRAFT)
+  /// Precio en pesos uruguayos (UYU), entero. Sin decimales para evitar errores de redondeo.
+  priceUyu        Int
+  /// Graduación alcohólica en décimas: 58 = 5,8 %.
+  abvTenths       Int
+  volumeMl        Int
+  /// Stock físico. Las reservas de pedidos pendientes se restan al validar (ver src/domain/inventory.ts).
+  stock           Int           @default(0)
+  summary         String
+  description     String
+  tastingNotes    String[]
+  ingredients     String[]
+  /// Los ingredientes deben revisarse antes de publicar la ficha comercial.
+  ingredientsVerified Boolean   @default(false)
+  accentColor     String
+  artworkSrc      String
+  artworkAlt      String
+  isFeatured      Boolean       @default(false)
+  sortOrder       Int           @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  orderItems      OrderItem[]
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  fullName  String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model ShippingOption {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  label       String
+  /// Costo en UYU. Enteros; 0 = sin costo.
+  priceUyu    Int
+  /// Departamentos cubiertos. Lista vacía = todo Uruguay (solo si el operador lo configura).
+  departments String[]
+  enabled     Boolean  @default(false)
+  isPickup    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  /// Token aleatorio que da acceso a la página del pedido. Nunca se expone el id interno.
+  publicToken     String      @unique
+  status          OrderStatus @default(PENDING_PAYMENT)
+  customerId      String
+  customer        Customer    @relation(fields: [customerId], references: [id])
+  subtotalUyu     Int
+  shippingUyu     Int
+  totalUyu        Int
+  currency        String      @default("UYU")
+  shippingCode    String
+  shippingLabel   String
+  isPickup        Boolean     @default(false)
+  // Dirección de entrega (vacía para retiro en local).
+  department      String?
+  city            String?
+  street          String?
+  streetNumber    String?
+  apartment       String?
+  postalCode      String?
+  addressNotes    String?
+  /// Mientras el pago está pendiente, las unidades quedan reservadas hasta esta fecha.
+  reservedUntil   DateTime?
+  paidAt          DateTime?
+  notes           String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+  payments        Payment[]
+
+  @@index([status, reservedUntil])
+}
+
+/// Snapshot de precio y nombre al momento de la compra.
+model OrderItem {
+  id            String   @id @default(cuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  productSlug   String
+  productName   String
+  productStyle  String
+  unitPriceUyu  Int
+  quantity      Int
+  lineTotalUyu  Int
+
+  @@unique([orderId, productId])
+}
+
+model Payment {
+  id                   String   @id @default(cuid())
+  orderId              String
+  order                Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  provider             String
+  providerPreferenceId String?
+  /// Id de pago del proveedor. Único para que un webhook repetido no duplique registros.
+  providerPaymentId    String?  @unique
+  providerStatus       String?
+  amountUyu            Int
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([orderId])
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

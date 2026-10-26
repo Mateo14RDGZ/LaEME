@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: laeme
+      POSTGRES_PASSWORD: laeme_dev_only
+      POSTGRES_DB: laeme
+    ports:
+      - "5432:5432"
+    volumes:
+      - laeme_pg:/var/lib/postgresql/data
+
+volumes:
+  laeme_pg:
