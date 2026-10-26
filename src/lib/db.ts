@@ -9,7 +9,8 @@ function createClient(): PrismaClient {
     throw new Error("DATABASE_URL no está configurada.");
   }
   return new PrismaClient({
-    adapter: new PrismaPg({ connectionString }),
+    // Serverless: cada instancia tiene su pool. Pocas conexiones evitan agotar Postgres.
+    adapter: new PrismaPg({ connectionString, max: 5 }),
   });
 }
 

@@ -93,7 +93,7 @@ npm run dev                   # http://localhost:3000
 Otros comandos:
 
 - `npm test`: pruebas unitarias de dominio (sin base de datos).
-- `npx tsx --test src/domain/orders.integration.test.ts`: pruebas de integración contra PostgreSQL. **Crea y borra sus propios datos; usar solo la base de desarrollo.**
+- `npm run test:integration`: pruebas de integración contra PostgreSQL. **Crea y borra sus propios datos; usar solo la base de desarrollo, nunca la de producción.**
 - `npm run lint`: TypeScript en modo estricto.
 - `npm run build`: genera el cliente de Prisma y compila.
 
@@ -185,26 +185,40 @@ Ajustes del sitio (contacto y redes): filas en `SiteSetting`, claves `contact.em
 
 ## Expiración de reservas
 
-Programar una llamada cada 5 minutos:
+`vercel.json` programa `GET /api/cron/expire-orders` cada 5 minutos. Vercel envía `Authorization: Bearer $CRON_SECRET` automáticamente cuando `CRON_SECRET` está definida. **Los cron jobs de cada 5 minutos requieren el plan Pro de Vercel**; en plan Hobby el mínimo es diario. Sin esta tarea, el stock disponible igual se libera por fecha, pero el estado del pedido no pasa a `EXPIRED`.
+
+Para probarla a mano:
 
 ```bash
-curl -X POST https://TU-DOMINIO/api/cron/expire-orders \
-  -H "Authorization: Bearer $CRON_SECRET"
+curl -H "Authorization: Bearer $CRON_SECRET" https://TU-DOMINIO/api/cron/expire-orders
 ```
-
-En Vercel, configurar un Cron Job con la misma cabecera. Sin esta tarea, un pedido vencido sigue como `PENDING_PAYMENT` hasta que el cálculo de reservas lo ignora por fecha: el stock disponible ya se libera igual, pero el estado no se actualiza.
 
 ## Despliegue en Vercel
 
-1. Crear una base PostgreSQL gestionada (Neon, Supabase o similar) y tomar su `DATABASE_URL`.
-2. Importar el repositorio en Vercel y cargar las variables de entorno de `.env.example` con valores reales.
-3. Ejecutar migraciones contra la base de producción: `npx prisma migrate deploy` (con `DATABASE_URL` de producción).
-4. Ejecutar el seed una vez: `npm run db:seed`.
-5. Configurar el webhook de Mercado Pago apuntando a `https://TU-DOMINIO/api/webhooks/mercadopago`.
-6. Configurar el Cron Job de expiración.
-7. Verificar: `/`, `/cervezas`, una ficha, `/checkout` (debe mostrar el estado de configuración), `/robots.txt`, `/sitemap.xml`.
+1. **Base de datos**: crear un PostgreSQL gestionado (Neon, Supabase, Vercel Postgres u otro) y copiar la cadena de conexión. Usar la conexión con SSL que indique el proveedor.
+2. **Proyecto**: importar el repositorio en Vercel. El framework se detecta como Next.js y `vercel.json` ya define el cron.
+3. **Variables de entorno** (Settings → Environment Variables, en *Production*):
 
-Los `dynamic = "force-dynamic"` de las páginas significan que el build no necesita la base; cada solicitud la consulta.
+   | Variable | Valor |
+   | --- | --- |
+   | `DATABASE_URL` | Cadena de conexión de producción. |
+   | `NEXT_PUBLIC_SITE_URL` | `https://tu-dominio` (sin barra final). |
+   | `MERCADOPAGO_ACCESS_TOKEN` | Token de producción (`APP_USR-…`) o de prueba mientras se valida. |
+   | `MERCADOPAGO_WEBHOOK_SECRET` | Firma secreta de la aplicación de Mercado Pago. |
+   | `ORDER_RESERVATION_MINUTES` | `30` (opcional). |
+   | `CRON_SECRET` | Cadena aleatoria de al menos 16 caracteres. |
+
+4. **Migraciones**: antes del primer despliegue, aplicar las migraciones contra la base de producción desde tu máquina:
+   ```bash
+   DATABASE_URL="<cadena de producción>" npx prisma migrate deploy
+   ```
+   Las migraciones no corren en el build a propósito: un build fallido no debe tocar la base.
+5. **Seed**: una sola vez, con la misma `DATABASE_URL`: `DATABASE_URL="…" npm run db:seed`. Deja todo deshabilitado y con precio 0 hasta que cargues datos reales.
+6. **Deploy**: el comando de build es `npm run build` (genera el cliente de Prisma y compila). Cada push a la rama de producción redespliega.
+7. **Webhook de Mercado Pago**: configurar `https://tu-dominio/api/webhooks/mercadopago` en la aplicación, con los eventos de pagos.
+8. **Verificación post-deploy**: `/`, `/cervezas`, una ficha, `/checkout` (debe mostrar el estado de configuración), `/robots.txt`, `/sitemap.xml`, y un 404 real en `/cervezas/no-existe`.
+
+Las páginas leen la base en cada solicitud (`force-dynamic`), así que el build no necesita conexión a la base.
 
 ## Verificación realizada
 
@@ -212,8 +226,8 @@ Ejecutado en este entorno, con PostgreSQL 16 real:
 
 - `tsc --noEmit` (estricto): sin errores.
 - `npm run build`: compila y genera todas las rutas.
-- Pruebas unitarias de dominio (17): cotización, stock limitado, envíos por zona, firma de webhook, transiciones de pago, validación de entrada.
-- Pruebas de integración (5): reserva y bloqueo de sobreventa, descuento de stock idempotente, rechazo que libera, monto distinto a revisión, reserva vencida y pago tardío.
+- Pruebas unitarias de dominio (17, `npm test`, sin base de datos): cotización, stock limitado, envíos por zona, firma de webhook, transiciones de pago, validación de entrada.
+- Pruebas de integración (5, `npm run test:integration`, requiere base): reserva y bloqueo de sobreventa, descuento de stock idempotente, rechazo que libera, monto distinto a revisión, reserva vencida y pago tardío.
 - Servidor de producción: rutas públicas responden, rutas inexistentes dan 404 real, API valida entrada, checkout sin configuración responde 503, checkout con Mercado Pago inaccesible responde 502 y cancela el pedido liberando reserva, webhook sin firma o con firma inválida responde 401, webhook con firma válida pero sin poder consultar el pago responde 500 (para reintento).
 - Capturas en escritorio y móvil sin desborde horizontal.
 
