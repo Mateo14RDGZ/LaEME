@@ -87,7 +87,7 @@ export function AgeGate() {
           </div>
         )}
 
-        <p className="mt-8 label-caps text-[0.7rem] text-brown">
+        <p className="mt-8 text-sm text-muted">
           Consumir con moderación · Mantener refrigerada
         </p>
       </div>

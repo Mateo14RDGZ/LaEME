@@ -11,7 +11,7 @@ export default function TermsPage() {
   return (
     <article className="mx-auto max-w-3xl space-y-8 px-4 pb-24 pt-14 sm:px-6">
       <h1 className="font-display text-[clamp(3rem,8vw,5.5rem)] font-black leading-[0.92]">Términos</h1>
-      <div className="border-l-2 border-gold bg-gold/10 p-4 text-sm">
+      <div className="notice notice-warn text-sm">
         Documento provisorio. Debe ser revisado por asesoría legal antes de vender, incluyendo requisitos de venta de
         alcohol, etiquetado, impuestos y defensa del consumidor en Uruguay.
       </div>

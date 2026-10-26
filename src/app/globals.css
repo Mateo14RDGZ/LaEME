@@ -13,6 +13,8 @@
   --color-olive: #52633b;
   --color-brown: #38271d;
   --color-burgundy: #8f3535;
+  /* Texto secundario sólido: nunca gris ni opacidad sobre crema (contraste >= 4.5:1). */
+  --color-muted: #4a3a2c;
 
   --font-display: var(--font-display-family), "Playfair Display", "Times New Roman", serif;
   --font-label: var(--font-label-family), "Oswald", "Arial Narrow", sans-serif;
@@ -47,6 +49,20 @@
   h3 {
     text-wrap: balance;
   }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Elementos del navegador con identidad propia, no los defaults. */
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-cream);
+  }
+  html {
+    caret-color: var(--color-orange);
+    scrollbar-color: var(--color-brown) var(--color-parchment);
+  }
 }
 
 @layer components {
@@ -61,7 +77,7 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.22;
+    opacity: 0.14;
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0 0.06  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
@@ -69,8 +85,30 @@
   .label-caps {
     font-family: var(--font-label);
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     font-weight: 600;
+  }
+
+  .text-muted {
+    color: var(--color-muted);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .notice {
+    border: 1px solid var(--color-ink);
+    padding: 1rem 1.25rem;
+    background: var(--color-cream);
+  }
+  .notice-warn {
+    border-color: var(--color-brown);
+    background: color-mix(in srgb, var(--color-gold) 22%, var(--color-cream));
+  }
+  .notice-error {
+    border-color: var(--color-burgundy);
+    background: color-mix(in srgb, var(--color-burgundy) 8%, var(--color-cream));
   }
 
   .rule {

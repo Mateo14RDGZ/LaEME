@@ -23,26 +23,25 @@ export default async function ContactPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 pb-24 pt-14 sm:px-6 lg:px-10">
-      <p className="label-caps text-[0.78rem]">Contacto</p>
       <h1 className="font-display mt-4 text-[clamp(3rem,8vw,6rem)] font-black leading-[0.92]">Hablemos.</h1>
-      <p className="mt-6 max-w-xl text-lg text-ink/85">
+      <p className="mt-6 max-w-xl text-lg text-muted">
         Para consultas sobre pedidos, envíos o la cerveza, escribinos por los canales de abajo.
       </p>
 
       <section aria-labelledby="canales" className="mt-14 border-t border-ink pt-8">
         <h2 id="canales" className="sr-only">Canales</h2>
         {configured.length === 0 ? (
-          <p className="text-ink/80">
+          <p className="text-muted">
             Los datos de contacto todavía no están publicados. El operador debe cargarlos en los ajustes del sitio.
           </p>
         ) : (
           <dl className="divide-y divide-ink/20">
             {configured.map((r) => (
               <div key={r.label} className="grid gap-2 py-5 sm:grid-cols-[10rem_1fr]">
-                <dt className="label-caps text-[0.75rem]">{r.label}</dt>
+                <dt className="text-muted">{r.label}</dt>
                 <dd className="text-lg">
                   {r.href ? (
-                    <a href={r.href} className="underline underline-offset-4 hover:text-orange" rel="noopener noreferrer">
+                    <a href={r.href} className="underline underline-offset-4 hover:text-burgundy" rel="noopener noreferrer">
                       {r.value}
                     </a>
                   ) : (

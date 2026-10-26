@@ -199,7 +199,7 @@ export function CheckoutForm() {
   }
 
   if (!hydrated) {
-    return <p className="text-ink/70" aria-live="polite">Preparando tu pedido…</p>;
+    return <p className="text-muted" aria-live="polite">Preparando tu pedido…</p>;
   }
 
   if (entries.length === 0) {
@@ -215,7 +215,7 @@ export function CheckoutForm() {
     <form onSubmit={onSubmit} noValidate className="grid gap-12 lg:grid-cols-12">
       <div className="space-y-12 lg:col-span-7">
         {issues.length > 0 && (
-          <div role="alert" className="border-l-2 border-burgundy bg-burgundy/5 p-5">
+          <div role="alert" className="notice notice-error">
             <p className="font-semibold text-burgundy">Revisá estos puntos:</p>
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
               {issues.map((i, idx) => (
@@ -372,7 +372,7 @@ export function CheckoutForm() {
           {errorFor("ageConfirmed") && (
             <p className="text-sm font-semibold text-burgundy">{errorFor("ageConfirmed")}</p>
           )}
-          <p className="text-sm text-ink/75">
+          <p className="text-sm text-muted">
             Serás redirigido a Mercado Pago para pagar. Tu pedido queda confirmado solo cuando el pago es aprobado.
           </p>
         </fieldset>
@@ -394,7 +394,7 @@ export function CheckoutForm() {
             <Row label="Envío" value={selectedOption ? (shippingUyu > 0 ? formatUyu(shippingUyu) : "Sin costo") : "Elegí una opción"} />
             <Row label="Total a pagar" value={quote ? formatUyu(subtotal + shippingUyu) : "—"} strong />
           </dl>
-          <p className="mt-3 text-xs text-ink/70">
+          <p className="mt-3 text-xs text-muted">
             El total final lo confirma el servidor al crear el pedido. Moneda: pesos uruguayos (UYU).
           </p>
 
@@ -407,7 +407,7 @@ export function CheckoutForm() {
           <button type="submit" disabled={!canSubmit} className="btn btn-primary mt-8 w-full">
             {submitting ? "Creando tu pedido…" : "Continuar al pago"}
           </button>
-          <p className="mt-4 text-xs text-ink/70">
+          <p className="mt-4 text-xs text-muted">
             Consumí con moderación. Venta solo a mayores de {MIN_AGE_YEARS} años.
           </p>
         </div>
@@ -435,7 +435,7 @@ function Field({
         {label}
       </label>
       {children}
-      {hint && !error && <p className="text-xs text-ink/70">{hint}</p>}
+      {hint && !error && <p className="text-xs text-muted">{hint}</p>}
       {error && <p className="text-sm font-semibold text-burgundy">{error}</p>}
     </div>
   );
@@ -452,7 +452,7 @@ function Row({ label, value, strong = false }: { label: string; value: string; s
 
 function Notice({ title, children, tone }: { title: string; children: ReactNode; tone: "warn" }) {
   return (
-    <div role="status" className={`border-l-2 p-5 ${tone === "warn" ? "border-gold bg-gold/10" : ""}`}>
+    <div role="status" className={`notice ${tone === "warn" ? "notice-warn" : ""}`}>
       <p className="font-semibold">{title}</p>
       <p className="mt-1 text-sm">{children}</p>
     </div>

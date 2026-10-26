@@ -66,7 +66,7 @@ export default async function ProductPage({ params }: Params) {
         />
       )}
 
-      <nav aria-label="Migas de pan" className="label-caps mb-8 text-[0.72rem]">
+      <nav aria-label="Migas de pan" className="mb-8 text-[0.9375rem] text-muted">
         <ol className="flex flex-wrap items-center gap-2">
           <li><Link href="/" className="hover:underline">Inicio</Link></li>
           <li aria-hidden="true">/</li>
@@ -91,12 +91,10 @@ export default async function ProductPage({ params }: Params) {
         </div>
 
         <div className="lg:col-span-6">
-          <p className="label-caps text-[0.78rem]" style={{ color: product.accentColor }}>
-            {product.style}
-          </p>
-          <h1 className="font-display mt-3 text-[clamp(3.5rem,10vw,6.5rem)] font-black leading-[0.9]">
+          <h1 className="font-display text-[clamp(3.5rem,10vw,6.5rem)] font-black leading-[0.9]">
             {product.name}
           </h1>
+          <p className="mt-4 text-lg text-muted">{product.style}</p>
           <p className="mt-6 max-w-xl font-display text-2xl italic leading-snug">{product.summary}</p>
           <div className="mt-6">
             <AvailabilityBadge item={product} />
@@ -104,15 +102,15 @@ export default async function ProductPage({ params }: Params) {
 
           <dl className="mt-10 grid grid-cols-3 border-y border-ink/25 py-5 text-center">
             <div>
-              <dt className="label-caps text-[0.7rem] text-ink/70">Graduación</dt>
+              <dt className="text-[0.9375rem] text-muted">Graduación</dt>
               <dd className="font-display mt-1 text-3xl font-bold">{formatAbv(product.abvTenths)}</dd>
             </div>
             <div>
-              <dt className="label-caps text-[0.7rem] text-ink/70">Volumen</dt>
+              <dt className="text-[0.9375rem] text-muted">Volumen</dt>
               <dd className="font-display mt-1 text-3xl font-bold">{product.volumeMl} ml</dd>
             </div>
             <div>
-              <dt className="label-caps text-[0.7rem] text-ink/70">Precio</dt>
+              <dt className="text-[0.9375rem] text-muted">Precio</dt>
               <dd className="font-display mt-1 text-3xl font-bold">
                 {product.priceUyu > 0 ? formatUyu(product.priceUyu) : "Por confirmar"}
               </dd>
@@ -124,35 +122,35 @@ export default async function ProductPage({ params }: Params) {
               <AddToCart slug={product.slug} name={product.name} />
             )}
             {product.status === "AVAILABLE" && !product.purchasable && (
-              <p className="border-l-2 border-burgundy pl-4 text-ink/85">
+              <p className="notice notice-error">
                 {product.priceUyu <= 0
                   ? "El precio de esta cerveza todavía no está confirmado."
                   : "No hay unidades disponibles en este momento."}
               </p>
             )}
             {product.status === "COMING_SOON" && (
-              <div className="border-l-2 border-gold pl-4">
+              <div className="notice notice-warn">
                 <p className="font-display text-2xl font-bold">Próximamente</p>
-                <p className="mt-2 text-ink/85">Todavía no está a la venta.</p>
+                <p className="mt-2">Todavía no está a la venta.</p>
               </div>
             )}
             {product.status === "SOLD_OUT" && (
-              <div className="border-l-2 border-burgundy pl-4">
+              <div className="notice notice-error">
                 <p className="font-display text-2xl font-bold">Agotada</p>
-                <p className="mt-2 text-ink/85">Por ahora no tenemos unidades para vender.</p>
+                <p className="mt-2">Por ahora no tenemos unidades para vender.</p>
               </div>
             )}
           </div>
 
           <section className="mt-14 space-y-8" aria-labelledby="descripcion">
             <div>
-              <h2 id="descripcion" className="label-caps text-[0.8rem]">Sobre esta cerveza</h2>
-              <p className="mt-3 leading-relaxed text-ink/90">{product.description}</p>
+              <h2 id="descripcion" className="font-display text-2xl font-bold">Sobre esta cerveza</h2>
+              <p className="mt-3 leading-relaxed text-muted">{product.description}</p>
             </div>
 
             {product.tastingNotes.length > 0 && (
               <div>
-                <h2 className="label-caps text-[0.8rem]">Notas de cata</h2>
+                <h2 className="font-display text-2xl font-bold">Notas de cata</h2>
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {product.tastingNotes.map((note) => (
                     <li key={note} className="border border-ink/40 px-3 py-1 text-sm">{note}</li>
@@ -162,18 +160,18 @@ export default async function ProductPage({ params }: Params) {
             )}
 
             <div>
-              <h2 className="label-caps text-[0.8rem]">Ingredientes</h2>
+              <h2 className="font-display text-2xl font-bold">Ingredientes</h2>
               {product.ingredientsVerified && product.ingredients.length > 0 ? (
                 <p className="mt-3 leading-relaxed">{product.ingredients.join(", ")}.</p>
               ) : (
-                <p className="mt-3 text-ink/75">
+                <p className="mt-3 text-muted">
                   Ingredientes en revisión. Se publicarán cuando la ficha esté verificada.
                 </p>
               )}
             </div>
 
-            <div className="text-sm text-ink/80">
-              <h2 className="label-caps text-[0.8rem] text-ink">Envío y temperatura</h2>
+            <div className="text-sm text-muted">
+              <h2 className="font-display text-2xl font-bold">Envío y temperatura</h2>
               <p className="mt-3">
                 Los envíos y los costos se calculan en el checkout según tu zona. Consultá{" "}
                 <Link href="/envios" className="underline underline-offset-4">cómo funcionan los envíos</Link>.
@@ -181,7 +179,7 @@ export default async function ProductPage({ params }: Params) {
               </p>
             </div>
 
-            <p className="border-t border-ink/20 pt-6 text-sm text-ink/75">
+            <p className="border-t border-ink/20 pt-6 text-sm text-muted">
               Contiene alcohol. Venta solo a mayores de 18 años. Consumí con moderación.
             </p>
           </section>
@@ -193,7 +191,7 @@ export default async function ProductPage({ params }: Params) {
           <h2 id="relacionadas" className="font-display text-4xl font-black">
             Otras cervezas de LA EME
           </h2>
-          <Tagline className="mt-3 text-sm tracking-[0.2em] text-ink/70" />
+          <Tagline className="mt-3 text-sm tracking-[0.2em] text-muted" />
           <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <ProductCard key={item.id} item={item} />

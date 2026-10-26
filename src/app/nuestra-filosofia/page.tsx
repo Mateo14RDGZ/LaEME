@@ -37,8 +37,7 @@ export default function PhilosophyPage() {
     <article className="mx-auto max-w-7xl px-4 pb-24 pt-14 sm:px-6 lg:px-10">
       <header className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-8">
-          <p className="label-caps text-[0.78rem]">Nuestra filosofía</p>
-          <h1 className="font-display mt-4 text-[clamp(3rem,8vw,6.5rem)] font-black leading-[0.92]">
+          <h1 className="font-display text-[clamp(3rem,8vw,6.5rem)] font-black leading-[0.92]">
             Preferimos mostrar lo que hacemos.
           </h1>
         </div>
@@ -47,7 +46,7 @@ export default function PhilosophyPage() {
         </div>
       </header>
 
-      <div className="mt-16 max-w-2xl space-y-6 text-xl leading-relaxed text-ink/90">
+      <div className="mt-16 max-w-2xl space-y-6 text-xl leading-relaxed text-muted">
         <p>
           No necesitamos prometer demasiado. El producto, los ingredientes, el oficio y el cuidado en cada detalle
           hablan por sí solos.
@@ -58,16 +57,15 @@ export default function PhilosophyPage() {
       <ol className="mt-20 grid gap-x-10 gap-y-14 border-t border-ink pt-14 md:grid-cols-2 lg:grid-cols-3">
         {VALUES.map((v, i) => (
           <li key={v.title}>
-            <p className="label-caps text-[0.75rem] text-orange">{String(i + 1).padStart(2, "0")}</p>
             <h2 className="font-display mt-3 text-3xl font-bold leading-tight">{v.title}</h2>
-            <p className="mt-4 leading-relaxed text-ink/85">{v.body}</p>
+            <p className="mt-4 leading-relaxed text-muted">{v.body}</p>
           </li>
         ))}
       </ol>
 
       <div className="mt-24 flex flex-wrap items-center gap-6 border-t border-ink pt-12">
         <Link href="/cervezas" className="btn btn-primary">Conocer las cervezas</Link>
-        <Link href="/contacto" className="label-caps text-[0.8rem] underline underline-offset-[6px]">Escribinos</Link>
+        <Link href="/contacto" className="font-semibold underline decoration-1 underline-offset-[6px]">Escribinos</Link>
       </div>
     </article>
   );

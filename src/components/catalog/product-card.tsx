@@ -1,24 +1,21 @@
 import Link from "next/link";
 import type { CatalogItem } from "@/data/queries";
 import { formatAbv, formatUyu } from "@/lib/money";
+import { Arrow } from "@/components/ui/arrow";
 import { AvailabilityBadge } from "./availability";
 import { BeerArtwork } from "./beer-artwork";
 
 type ProductCardProps = {
   item: CatalogItem;
-  /** Variante asimétrica para el ritmo del catálogo. */
+  /** Desplaza la tarjeta para un ritmo asimétrico en la grilla. */
   tall?: boolean;
   priority?: boolean;
 };
 
 export function ProductCard({ item, tall = false, priority = false }: ProductCardProps) {
   return (
-    <article className={`group flex flex-col ${tall ? "md:mt-16" : ""}`}>
-      <Link
-        href={`/cervezas/${item.slug}`}
-        className="block focus-visible:outline-offset-4"
-        aria-label={`Ver ${item.name}, ${item.style}`}
-      >
+    <article className={`group flex flex-col ${tall ? "sm:mt-20" : ""}`}>
+      <Link href={`/cervezas/${item.slug}`} className="block" aria-label={`Ver ${item.name}, ${item.style}`}>
         <BeerArtwork
           src={item.artworkSrc}
           alt={item.artworkAlt}
@@ -28,24 +25,22 @@ export function ProductCard({ item, tall = false, priority = false }: ProductCar
         />
       </Link>
 
-      <div className="mt-5 flex flex-1 flex-col gap-3">
+      <div className="mt-6 flex flex-1 flex-col">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="font-display text-3xl font-black leading-none">
+            <h3 className="font-display text-[2rem] font-black leading-none">
               <Link href={`/cervezas/${item.slug}`} className="hover:underline decoration-2 underline-offset-4">
                 {item.name}
               </Link>
             </h3>
-            <p className="label-caps mt-2 text-[0.75rem]" style={{ color: item.accentColor }}>
-              {item.style}
-            </p>
+            <p className="mt-2 text-[0.9375rem] text-muted">{item.style}</p>
           </div>
           <AvailabilityBadge item={item} />
         </div>
 
-        <p className="text-[0.95rem] leading-relaxed text-ink/80">{item.summary}</p>
+        <p className="mt-4 leading-relaxed">{item.summary}</p>
 
-        <dl className="mt-auto flex flex-wrap gap-x-6 gap-y-1 border-t border-ink/20 pt-3 text-sm">
+        <dl className="tabular mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-ink/20 pt-4 text-[0.9375rem]">
           <div className="flex gap-1.5">
             <dt className="sr-only">Graduación</dt>
             <dd className="font-semibold">{formatAbv(item.abvTenths)}</dd>
@@ -56,16 +51,13 @@ export function ProductCard({ item, tall = false, priority = false }: ProductCar
           </div>
           <div className="ml-auto flex gap-1.5">
             <dt className="sr-only">Precio</dt>
-            <dd className="font-semibold">{item.priceUyu > 0 ? formatUyu(item.priceUyu) : "Consultar"}</dd>
+            <dd className="font-semibold">{item.priceUyu > 0 ? formatUyu(item.priceUyu) : "Por confirmar"}</dd>
           </div>
         </dl>
 
-        <Link
-          href={`/cervezas/${item.slug}`}
-          className="label-caps mt-1 inline-flex w-fit items-center gap-2 text-[0.8rem] underline decoration-1 underline-offset-[6px] hover:decoration-2"
-        >
+        <Link href={`/cervezas/${item.slug}`} className="mt-6 inline-flex w-fit items-center gap-2 font-semibold underline decoration-1 underline-offset-[6px] hover:decoration-2">
           Descubrir cerveza
-          <span aria-hidden="true">→</span>
+          <Arrow />
         </Link>
       </div>
     </article>

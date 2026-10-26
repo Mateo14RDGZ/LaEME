@@ -18,15 +18,14 @@ export default async function CatalogPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 pb-24 pt-14 sm:px-6 lg:px-10">
       <header className="border-b border-ink pb-8">
-        <p className="label-caps text-[0.78rem]">Shop · Cervezas</p>
-        <h1 className="font-display mt-3 text-[clamp(3.5rem,9vw,7rem)] font-black leading-[0.9]">
+                <h1 className="font-display mt-3 text-[clamp(3.5rem,9vw,7rem)] font-black leading-[0.9]">
           Cervezas
         </h1>
-        <Tagline className="mt-5 text-sm tracking-[0.2em] text-ink/70" />
+        <p className="mt-5 text-lg text-muted">Cerveza independiente, hecha en Uruguay.</p>
       </header>
 
       {items.length === 0 ? (
-        <p className="mt-16 max-w-md text-lg text-ink/80">
+        <p className="mt-16 max-w-md text-lg text-muted">
           Todavía no hay cervezas publicadas. Volvé pronto.
         </p>
       ) : (

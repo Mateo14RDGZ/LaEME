@@ -57,14 +57,14 @@ export function CartView() {
   }, [quote, remove]);
 
   if (!hydrated) {
-    return <p className="text-ink/70" aria-live="polite">Cargando tu carrito…</p>;
+    return <p className="text-muted" aria-live="polite">Cargando tu carrito…</p>;
   }
 
   if (entries.length === 0) {
     return (
       <div className="border-t border-ink pt-10">
         <p className="font-display text-4xl font-black">Tu carrito está vacío.</p>
-        <p className="mt-4 max-w-md text-ink/80">Cuando elijas una cerveza, aparece acá con su precio final.</p>
+        <p className="mt-4 max-w-md text-muted">Cuando elijas una cerveza, aparece acá con su precio final.</p>
         <Link href="/cervezas" className="btn btn-primary mt-8">
           Explorar cervezas
         </Link>
@@ -81,7 +81,7 @@ export function CartView() {
         <h2 id="lineas" className="sr-only">Productos</h2>
 
         {status === "error" && (
-          <p role="alert" className="mb-6 border-l-2 border-burgundy pl-4">
+          <p role="alert" className="notice notice-error mb-6">
             No pudimos verificar precios y disponibilidad. Revisá tu conexión e intentá de nuevo.
           </p>
         )}
@@ -96,7 +96,7 @@ export function CartView() {
                     {line?.name ?? entry.slug}
                   </p>
                   {line && (
-                    <p className="mt-1 text-sm text-ink/75">
+                    <p className="mt-1 text-sm text-muted">
                       {formatUyu(line.unitPriceUyu)} c/u
                     </p>
                   )}
@@ -106,7 +106,7 @@ export function CartView() {
                     </p>
                   )}
                   {line?.limited && line.purchasable && (
-                    <p className="mt-2 text-sm text-brown font-semibold">Últimas unidades disponibles.</p>
+                    <p className="mt-2 text-sm font-semibold">Últimas unidades disponibles.</p>
                   )}
                 </div>
 
@@ -140,7 +140,7 @@ export function CartView() {
                   <button
                     type="button"
                     onClick={() => remove(entry.slug)}
-                    className="label-caps text-[0.72rem] underline underline-offset-4 hover:text-burgundy"
+                    className="text-[0.9375rem] font-semibold underline underline-offset-4 hover:text-burgundy"
                   >
                     Quitar
                   </button>
@@ -150,7 +150,7 @@ export function CartView() {
           })}
         </ul>
 
-        <button type="button" onClick={clear} className="label-caps mt-6 text-[0.72rem] underline underline-offset-4 hover:text-burgundy">
+        <button type="button" onClick={clear} className="mt-6 text-[0.9375rem] font-semibold underline underline-offset-4 hover:text-burgundy">
           Vaciar carrito
         </button>
       </section>
@@ -166,7 +166,7 @@ export function CartView() {
               </dd>
             </div>
           </dl>
-          <p className="mt-4 text-sm text-ink/75">
+          <p className="mt-4 text-sm text-muted">
             El envío se calcula en el checkout según tu zona y se suma al total.
           </p>
 

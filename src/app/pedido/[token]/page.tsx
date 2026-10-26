@@ -65,13 +65,11 @@ export default async function OrderPage({ params }: Params) {
       {order.status === "PAID" && <ClearCartOnPaid />}
       {pending && <PendingRefresh />}
 
-      <p className="label-caps text-[0.78rem]" aria-live="polite">
-        Pedido · {order.status === "PAID" ? "Confirmado" : "Estado"}
-      </p>
+      <p className="sr-only" aria-live="polite">Estado del pedido: {copy.title}</p>
       <h1 className="font-display mt-4 text-[clamp(2.75rem,7vw,4.5rem)] font-black leading-[0.95]">
         {copy.title}
       </h1>
-      <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/85">{copy.body}</p>
+      <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{copy.body}</p>
 
       <section aria-labelledby="detalle" className="mt-12 border-t border-ink pt-8">
         <h2 id="detalle" className="font-display text-3xl font-black">Detalle</h2>
@@ -80,7 +78,7 @@ export default async function OrderPage({ params }: Params) {
             <li key={`${item.productName}-${item.quantity}`} className="flex justify-between gap-4 py-4">
               <div>
                 <p className="font-semibold">{item.productName}</p>
-                <p className="text-sm text-ink/70">
+                <p className="text-sm text-muted">
                   {item.quantity} × {formatUyu(item.unitPriceUyu)} · {item.productStyle}
                 </p>
               </div>

@@ -15,10 +15,9 @@ export default async function ShippingPage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 pb-24 pt-14 sm:px-6">
-      <p className="label-caps text-[0.78rem]">Información</p>
       <h1 className="font-display mt-4 text-[clamp(3rem,8vw,5.5rem)] font-black leading-[0.92]">Envíos y devoluciones</h1>
 
-      <div className="mt-6 border-l-2 border-gold bg-gold/10 p-4 text-sm">
+      <div className="notice notice-warn mt-6 text-sm">
         Texto provisorio. Las zonas, los costos y los plazos se configuran antes de vender y deben ser revisados por el operador.
       </div>
 
@@ -38,7 +37,7 @@ export default async function ShippingPage() {
             ))}
           </ul>
         ) : (
-          <p className="text-ink/75">Todavía no hay opciones de envío habilitadas.</p>
+          <p className="text-muted">Todavía no hay opciones de envío habilitadas.</p>
         )}
       </section>
 
@@ -48,7 +47,7 @@ export default async function ShippingPage() {
           Si recibís un producto dañado o distinto al que compraste, escribinos dentro de un plazo razonable desde la
           entrega, con foto del producto y del número de pedido. Lo resolvemos caso por caso.
         </p>
-        <p className="leading-relaxed text-ink/80">
+        <p className="leading-relaxed text-muted">
           Por tratarse de bebidas alcohólicas, no aceptamos devoluciones por motivos de higiene una vez abierto el envase.
         </p>
       </section>

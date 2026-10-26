@@ -17,7 +17,7 @@ export function AvailabilityBadge({ item }: { item: Pick<CatalogItem, "status" |
 
   if (item.status === "AVAILABLE" && item.priceUyu <= 0) {
     label = "Precio por confirmar";
-    tone = "border-ink/60 text-ink/80";
+    tone = "border-ink/60 text-muted";
   } else if (item.status === "AVAILABLE" && item.purchasable) {
     tone = "border-olive text-olive";
   } else if (item.status === "AVAILABLE") {
