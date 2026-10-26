@@ -20,28 +20,36 @@ export type ProductSeed = {
   ingredientsVerified: boolean;
   abvTenths: number;
   volumeMl: number;
+  serviceTemperature: string;
   accentColor: string;
   artworkSrc: string;
+  bottleSrc: string;
   artworkAlt: string;
   isFeatured: boolean;
   sortOrder: number;
 };
 
+/**
+ * Textos y datos tomados de las etiquetas oficiales de LA EME.
+ * Ingredientes y recetas quedan sin publicar hasta verificarlos (ingredientsVerified = false).
+ */
 export const productSeeds: ProductSeed[] = [
   {
     slug: "tropical-haze",
     name: "Tropical Haze",
-    style: "IPA de mango & maracuyá",
+    style: "IPA de mango y maracuyá",
     summary: "Una IPA turbia y aromática que combina lúpulo con mango y maracuyá.",
     description:
       "Combina el carácter lupulado con la intensidad tropical del mango y el maracuyá. Cerveza artesanal uruguaya, hecha para compartir buenos momentos.",
-    tastingNotes: ["Mango maduro", "Maracuyá", "Lúpulo tropical"],
-    ingredients: ["Malta pilsen", "Trigo", "Avena", "Lúpulos Citra y Mosaic", "Mango", "Maracuyá"],
+    tastingNotes: ["Mango", "Maracuyá"],
+    ingredients: [],
     ingredientsVerified: false,
     abvTenths: 58,
     volumeMl: 330,
+    serviceTemperature: "6–8 °C",
     accentColor: "#C87927",
     artworkSrc: "/products/tropical-haze-label.webp",
+    bottleSrc: "/brand/tropical-haze-bottle.webp",
     artworkAlt: "Etiqueta de Tropical Haze con mango y maracuyá ilustrados sobre fondo amarillo",
     isFeatured: true,
     sortOrder: 1,
@@ -50,75 +58,49 @@ export const productSeeds: ProductSeed[] = [
     slug: "citrus-ipa",
     name: "Citrus IPA",
     style: "IPA cítrica y lupulada",
-    summary: "Lúpulo en primer plano con notas cítricas.",
+    summary: "Una IPA fresca y equilibrada, con intensas notas de lima, pomelo y frutas tropicales.",
     description:
-      "Una IPA de carácter lupulado y notas cítricas frescas, para quienes disfrutan del lúpulo al frente.",
-    tastingNotes: ["Cítrico", "Lúpulo"],
+      "Elaborada con ingredientes seleccionados para un sabor vibrante y refrescante. Es la primera cerveza que LA EME desarrolla, y todavía está en fase de experimentación.",
+    tastingNotes: ["Lima", "Pomelo", "Frutas tropicales"],
     ingredients: [],
     ingredientsVerified: false,
     abvTenths: 60,
     volumeMl: 330,
+    serviceTemperature: "6–8 °C",
     accentColor: "#52633B",
-    artworkSrc: "/products/citrus-ipa-label.webp",
-    artworkAlt: "Etiqueta de Citrus IPA con lima y conos de lúpulo en verdes",
+    artworkSrc: "/products/citrus-ipa-label-large.webp",
+    bottleSrc: "/brand/citrus-ipa-bottle.webp",
+    artworkAlt: "Etiqueta de Citrus IPA con lúpulos, follaje y limas cortadas en verde",
     isFeatured: false,
     sortOrder: 2,
   },
   {
-    slug: "midnight",
-    name: "Midnight",
-    style: "Stout de café & chocolate",
-    summary: "Un stout tostado en el que el café y el chocolate construyen el cuerpo.",
+    slug: "midnvght",
+    name: "Midnvght",
+    style: "Stout de café y chocolate",
+    summary: "Una stout intensa y sedosa, con notas de café, chocolate amargo y un tostado profundo.",
     description:
-      "Tonos tostados y oscuros. El café y el chocolate son protagonistas de una cerveza para la noche.",
-    tastingNotes: ["Café", "Chocolate", "Tostado"],
+      "Equilibrada, con cuerpo y un final seco, ideal para quienes disfrutan de sabores intensos y complejos.",
+    tastingNotes: ["Café", "Chocolate amargo", "Tostado profundo"],
     ingredients: [],
     ingredientsVerified: false,
     abvTenths: 65,
     volumeMl: 330,
+    serviceTemperature: "8–10 °C",
     accentColor: "#38271D",
-    artworkSrc: "/products/midnight-label.webp",
-    artworkAlt: "Etiqueta de Midnight con granos de café y cacao en tonos marrones",
+    artworkSrc: "/products/midnvght-label-large.webp",
+    bottleSrc: "/brand/midnvght-bottle.webp",
+    artworkAlt: "Etiqueta de Midnvght con granos de café, chocolate y cacao en tonos oscuros",
     isFeatured: false,
     sortOrder: 3,
   },
-  {
-    slug: "golden",
-    name: "Golden",
-    style: "Lager clásica",
-    summary: "Una lager dorada de trago limpio para el día a día.",
-    description:
-      "Una lager clásica de tonos dorados, pensada para acompañar cualquier momento.",
-    tastingNotes: ["Maltas claras", "Trago limpio"],
-    ingredients: [],
-    ingredientsVerified: false,
-    abvTenths: 48,
-    volumeMl: 330,
-    accentColor: "#D9A72E",
-    artworkSrc: "/products/golden-label.webp",
-    artworkAlt: "Etiqueta de Golden con espigas de trigo en tonos dorados",
-    isFeatured: false,
-    sortOrder: 4,
-  },
-  {
-    slug: "berry-sour",
-    name: "Berry Sour",
-    style: "Sour con frutos rojos",
-    summary: "Ácida y frutal, con la intensidad de los frutos rojos.",
-    description:
-      "Una cerveza ácida con la intensidad de los frutos rojos, para quienes buscan algo distinto.",
-    tastingNotes: ["Frutos rojos", "Acidez"],
-    ingredients: [],
-    ingredientsVerified: false,
-    abvTenths: 52,
-    volumeMl: 330,
-    accentColor: "#8F3535",
-    artworkSrc: "/products/berry-sour-label.webp",
-    artworkAlt: "Etiqueta de Berry Sour con frutos rojos y hojas en bordó",
-    isFeatured: false,
-    sortOrder: 5,
-  },
 ];
+
+/**
+ * Variedades que se retiran del catálogo público. No se borran: quedan como borrador
+ * hasta que el responsable de la marca decida otra cosa.
+ */
+export const retiredSlugs = ["golden", "berry-sour", "midnight"] as const;
 
 export type ShippingSeed = {
   code: string;

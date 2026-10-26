@@ -37,14 +37,14 @@ export const metadata: Metadata = {
     template: "%s · LA EME",
   },
   description:
-    "LA EME es una cerveza artesanal independiente, hecha en Uruguay. QUE HABLE LO QUE HACEMOS.",
+    "LA EME es una cerveza artesanal independiente, hecha en Trinidad, Flores. QUE HABLE LO QUE HACEMOS.",
   applicationName: "LA EME",
   openGraph: {
     type: "website",
     locale: "es_UY",
     siteName: "LA EME",
     title: "LA EME · QUE HABLE LO QUE HACEMOS.",
-    description: "Cerveza artesanal independiente, hecha en Uruguay.",
+    description: "Cerveza artesanal independiente, hecha en Trinidad, Flores.",
     images: ["/products/tropical-haze-label.webp"],
   },
   icons: {

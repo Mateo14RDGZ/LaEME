@@ -7,7 +7,7 @@ import "dotenv/config";
  *  - precio, estado, stock, envíos habilitados y ajustes del sitio NO se pisan.
  */
 import { db } from "../src/lib/db.ts";
-import { productSeeds, shippingSeeds, siteSettingKeys } from "../src/data/catalog.seed.ts";
+import { productSeeds, retiredSlugs, shippingSeeds, siteSettingKeys } from "../src/data/catalog.seed.ts";
 
 async function main() {
   for (const seed of productSeeds) {
@@ -24,6 +24,8 @@ async function main() {
       accentColor: seed.accentColor,
       artworkSrc: seed.artworkSrc,
       artworkAlt: seed.artworkAlt,
+      bottleSrc: seed.bottleSrc,
+      serviceTemperature: seed.serviceTemperature,
       isFeatured: seed.isFeatured,
       sortOrder: seed.sortOrder,
     };
@@ -34,6 +36,13 @@ async function main() {
     });
     console.log(`producto: ${seed.slug}`);
   }
+
+  // Variedades fuera del catálogo público: borrador, sin aceptar pedidos.
+  const retired = await db.product.updateMany({
+    where: { slug: { in: [...retiredSlugs] } },
+    data: { status: "DRAFT" },
+  });
+  console.log(`fuera del catálogo: ${retired.count}`);
 
   for (const shipping of shippingSeeds) {
     await db.shippingOption.upsert({

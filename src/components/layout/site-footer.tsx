@@ -66,7 +66,7 @@ export function SiteFooter({ settings }: { settings: FooterSettings }) {
 
       <div className="border-t border-cream/20">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-sm text-cream/85 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-12">
-          <p>© {new Date().getFullYear()} LA EME · Cerveza artesanal independiente, hecha en Uruguay.</p>
+          <p>© {new Date().getFullYear()} LA EME · Cerveza artesanal independiente, hecha en Trinidad, Flores.</p>
           <p className="text-gold">{RESPONSIBLE_CONSUMPTION_MESSAGE}</p>
         </div>
       </div>

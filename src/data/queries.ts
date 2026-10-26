@@ -26,6 +26,8 @@ export type CatalogItem = {
   accentColor: string;
   artworkSrc: string;
   artworkAlt: string;
+  bottleSrc: string | null;
+  serviceTemperature: string | null;
   isFeatured: boolean;
   /** Unidades que pueden venderse hoy (stock menos reservas). */
   availableUnits: number;
@@ -58,6 +60,8 @@ async function withAvailability(
       accentColor: p.accentColor,
       artworkSrc: p.artworkSrc,
       artworkAlt: p.artworkAlt,
+      bottleSrc: p.bottleSrc,
+      serviceTemperature: p.serviceTemperature,
       isFeatured: p.isFeatured,
       availableUnits,
       purchasable: p.status === "AVAILABLE" && p.priceUyu > 0 && availableUnits > 0,

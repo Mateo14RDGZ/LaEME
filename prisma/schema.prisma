@@ -56,6 +56,10 @@ model Product {
   accentColor     String
   artworkSrc      String
   artworkAlt      String
+  /// Foto de la botella para composiciones de marca. Vacío = usar la etiqueta.
+  bottleSrc       String?
+  /// Temperatura de servicio confirmada en la etiqueta, por ejemplo "6–8 °C".
+  serviceTemperature String?
   isFeatured      Boolean       @default(false)
   sortOrder       Int           @default(0)
   createdAt       DateTime      @default(now())

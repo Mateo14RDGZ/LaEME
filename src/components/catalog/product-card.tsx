@@ -1,25 +1,33 @@
 import Link from "next/link";
 import type { CatalogItem } from "@/data/queries";
 import { formatAbv, formatUyu } from "@/lib/money";
+import { isDarkHex } from "@/lib/color";
 import { Arrow } from "@/components/ui/arrow";
 import { AvailabilityBadge } from "./availability";
-import { BeerArtwork } from "./beer-artwork";
+import { Bottle } from "./bottle";
 
 type ProductCardProps = {
   item: CatalogItem;
   /** Desplaza la tarjeta para un ritmo asimétrico en la grilla. */
-  tall?: boolean;
+  offset?: boolean;
   priority?: boolean;
 };
 
-export function ProductCard({ item, tall = false, priority = false }: ProductCardProps) {
+/** Tarjeta de variedad: la botella es la protagonista; las variedades oscuras cambian de paleta. */
+export function ProductCard({ item, offset = false, priority = false }: ProductCardProps) {
+  const dark = isDarkHex(item.accentColor);
+  // Variedad oscura: tarjeta entera en marrón, con textos secundarios en crema.
+  const darkCard = dark
+    ? "bg-brown p-6 text-cream sm:p-8 [&_.text-muted]:text-cream/85 [&_.border-ink\\/20]:border-cream/25"
+    : "";
+
   return (
-    <article className={`group flex flex-col ${tall ? "sm:mt-20" : ""}`}>
+    <article className={`group flex flex-col ${offset ? "sm:mt-24" : ""} ${darkCard}`}>
       <Link href={`/cervezas/${item.slug}`} className="block" aria-label={`Ver ${item.name}, ${item.style}`}>
-        <BeerArtwork
-          src={item.artworkSrc}
+        <Bottle
+          src={item.bottleSrc ?? item.artworkSrc}
           alt={item.artworkAlt}
-          accentColor={item.accentColor}
+          tint={item.accentColor}
           sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
           priority={priority}
         />
@@ -29,7 +37,7 @@ export function ProductCard({ item, tall = false, priority = false }: ProductCar
         <div className="flex items-start justify-between gap-4">
           <div>
             <h3 className="font-display text-[2rem] font-black leading-none">
-              <Link href={`/cervezas/${item.slug}`} className="hover:underline decoration-2 underline-offset-4">
+              <Link href={`/cervezas/${item.slug}`} className="underline-offset-4 decoration-2 hover:underline">
                 {item.name}
               </Link>
             </h3>

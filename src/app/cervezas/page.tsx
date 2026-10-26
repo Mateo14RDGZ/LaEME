@@ -21,7 +21,7 @@ export default async function CatalogPage() {
                 <h1 className="font-display mt-3 text-[clamp(3.5rem,9vw,7rem)] font-black leading-[0.9]">
           Cervezas
         </h1>
-        <p className="mt-5 text-lg text-muted">Cerveza independiente, hecha en Uruguay.</p>
+        <p className="mt-5 text-lg text-muted">Cerveza independiente, hecha en Trinidad, Flores.</p>
       </header>
 
       {items.length === 0 ? (
@@ -31,7 +31,7 @@ export default async function CatalogPage() {
       ) : (
         <div className="mt-14 grid gap-14 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => (
-            <ProductCard key={item.id} item={item} tall={i % 2 === 1} priority={i < 2} />
+            <ProductCard key={item.id} item={item} offset={i % 2 === 1} priority={i < 2} />
           ))}
         </div>
       )}
