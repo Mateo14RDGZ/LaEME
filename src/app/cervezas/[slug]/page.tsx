@@ -118,20 +118,20 @@ export default async function ProductPage({ params }: Params) {
           <div className="mt-10">
             {canBuy && <AddToCart slug={product.slug} name={product.name} />}
             {!canBuy && product.status === "AVAILABLE" && (
-              <p className="notice">
+              <p className="notice text-ink">
                 {product.priceUyu <= 0
                   ? "El precio de esta cerveza todavía no está confirmado."
                   : "No hay unidades disponibles en este momento."}
               </p>
             )}
             {product.status === "COMING_SOON" && (
-              <div className="notice">
+              <div className="notice text-ink">
                 <p className="font-display text-2xl font-bold">En desarrollo</p>
                 <p className="mt-2">Todavía no está a la venta. Es parte del universo de LA EME mientras se completa su elaboración.</p>
               </div>
             )}
             {product.status === "SOLD_OUT" && (
-              <div className="notice notice-error">
+              <div className="notice notice-error text-ink">
                 <p className="font-display text-2xl font-bold">Agotada</p>
                 <p className="mt-2">Por ahora no tenemos unidades para vender.</p>
               </div>
